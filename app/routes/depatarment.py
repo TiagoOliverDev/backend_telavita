@@ -1,9 +1,9 @@
 from flask import request, jsonify, Blueprint
 from ..repositories import departamentRepository
 from ..services.departament_service import departamentService
-from .validated_token import token_required
+from .resouces.validated_token import token_required
 from flask_cors import CORS, cross_origin
-from .cors_preflight_response import CorsOptions
+from .resouces.cors_preflight_response import CorsOptions
 import os
 
 
