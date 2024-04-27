@@ -1,6 +1,6 @@
 from flask import Flask
 from flask_migrate import Migrate
-from app.models import db, Department, Employee, Dependent  # Agora este import deve funcionar corretamente
+from app.models import db, Department, Employee, Dependent  
 from app.routes import routes_blueprint
 from config import DevelopmentConfig, ProductionConfig, TestingConfig
 import os
