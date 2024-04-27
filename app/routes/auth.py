@@ -11,6 +11,59 @@ auth_repository = AuthRepository()
 
 auth_blueprint = Blueprint("auth", __name__, url_prefix="/auth")
 
+# @auth_blueprint.route('/login', methods=['POST'])
+# def login():
+#     auth_data = request.get_json()
+
+#     email = auth_data['email']
+#     password = auth_data['password']
+#     id_user = auth_repository.get_id_user(email=email)
+#     type_permission = auth_repository.get_type_permission_user(email=email)
+
+#     if not email or not password:
+#         return jsonify({'message': 'Email and password are required'}), 400
+
+#     if not auth_repository.email_user_exists(email):
+#         return jsonify({'message': 'User does not exist'}), 401
+
+#     stored_password = auth_repository.get_user_password(email)
+#     if not auth_service.verify_password(stored_password, password):
+#         return jsonify({'message': 'Invalid password'}), 401
+
+#     token = auth_service.generate_token(email)
+    
+#     if isinstance(token, bytes):
+#         token = token.decode('utf-8')
+
+#     return jsonify({'id_user': id_user, 'BearerToken': token, 'type_permission': type_permission}), 200
+
+@auth_blueprint.route('/login', methods=['POST'])
+def login():
+    auth_data = request.get_json()
+
+    email = auth_data.get('email')
+    password = auth_data.get('password')
+
+    if not email or not password:
+        return jsonify({'message': 'Email and password are required'}), 400
+
+    if not auth_repository.email_user_exists(email):
+        return jsonify({'message': 'User does not exist'}), 401
+
+    stored_password = auth_repository.get_user_password(email)
+    if not auth_service.verify_password(stored_password, password):
+        return jsonify({'message': 'Invalid password'}), 401
+
+    # As informações do usuário são recuperadas somente após validar o e-mail e a senha.
+    id_user = auth_repository.get_id_user(email=email)
+    type_permission = auth_repository.get_type_permission_user(email=email)
+
+    token = auth_service.generate_token(email)
+    if isinstance(token, bytes):
+        token = token.decode('utf-8')
+
+    return jsonify({'id_user': id_user, 'BearerToken': token, 'type_permission': type_permission}), 200
+
 
 @auth_blueprint.route('/register', methods=['POST'])
 def register():
