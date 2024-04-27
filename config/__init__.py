@@ -1,3 +1,1 @@
-from .development import DevelopmentConfig
-from .production import ProductionConfig
-from .testing import TestingConfig
+from .config import DevelopmentConfig, ProductionConfig, TestingConfig
