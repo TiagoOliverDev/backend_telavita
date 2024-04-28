@@ -49,7 +49,7 @@ class DepartmentService:
             department = self.repository.get_department_by_id(department_id)
             if not department:
                 return 'Departamento não encontrado', False
-            
+
             if self.repository.delete_department(department_id):
                 return 'Departamento excluído com sucesso', True
             else:
@@ -60,8 +60,12 @@ class DepartmentService:
         
         
     def get_department_by_id(self, department_id: int):
-        department = self.repository.get_department_by_id(department_id)
-        if department:
-            return {'id': department.id, 'name': department.name}, True
-        else:
-            return 'Departamento não encontrado', False
+        try:
+            department = self.repository.get_department_by_id(department_id)
+            if department:
+                return {'id': department.id, 'name': department.name}, True
+            else:
+                return 'Departamento não encontrado', False
+        except Exception as e:
+            logging.error(f"Erro ao buscar o departamento por ID: {e}")
+            return 'Erro interno ao buscar o departamento', False
