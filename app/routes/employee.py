@@ -48,31 +48,34 @@ def get_employees_by_department(department_id: int):
                 return jsonify({'error': 'Nenhum colaborador encontrado'}), 404
         else:
             return jsonify({'error': 'Erro ao acessar o banco de dados'}), 500
-            
+
     except Exception as e:
         logging.error(f"Erro interno no servidor ao tentar listar colaboradores: {str(e)}")
         return jsonify({'error': 'Erro interno no servidor'}), 500
 
-@employee_blueprint.route('/editar/<int:department_id>', methods=['PUT'])
-def update_department(department_id: int):
-    data = request.get_json()
-    new_name = data.get('name')
-
-    if not new_name:
-        return jsonify({'error': 'O novo nome do employeeo é obrigatório'}), 400
-
+@employee_blueprint.route('/editar/<int:employee_id>', methods=['PUT'])
+def update_employee(employee_id: int):
     try:
-        updated_department_id, message = employee_service.update_department(department_id, new_name)
+        data = request.get_json()
+        new_name = data.get('name')
+        new_department_id = data.get('department_id', None)  
+        new_dependents = data.get('dependents', None)  
 
-        if updated_department_id:
-            return jsonify({'message': message, 'department_id': updated_department_id}), 200  
-        elif message == 'Nome de employeeo já existe':
+        if not new_name and new_department_id is None and new_dependents is None:
+            return jsonify({'error': 'Nenhuma informação fornecida para atualização'}), 400
+
+        updated_employee_id, message = employee_service.update_employee(employee_id, new_name, new_department_id, new_dependents)
+
+        if updated_employee_id:
+            return jsonify({'message': message, 'department_id': updated_employee_id}), 200
+        elif message == 'Nome de colaborador já existe':
             return jsonify({'error': message}), 409
         else:
-            return jsonify({'error': 'Erro ao tentar atualizar o employeeo'}), 500
+            return jsonify({'error': message}), 500
+        
     except Exception as e:
-        logging.error(f"Erro inesperado ao atualizar o employeeo: {e}")
-        return jsonify({'error': 'Erro interno do servidor'}), 500
+        logging.error(f"Erro interno no servidor ao tentar atualizar colaborador: {str(e)}")
+        return jsonify({'error': 'Erro interno no servidor'}), 500
     
 @employee_blueprint.route('/excluir/<int:department_id>', methods=['DELETE'])
 def delete_department(department_id: int):

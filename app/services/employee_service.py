@@ -39,17 +39,17 @@ class EmployeeService:
             logging.error(f"Erro ao listar departamentos: {e}")
             return None
 
-    def update_employee(self, employee_id: int, new_name: str):
-        if self.repository.exists_employee(new_name):
-            return None, 'Nome de departamento já existe'
-        
+    def update_employee(self, employee_id: int, new_name: str = None, new_department_id: int = None, new_dependents: list = None):
         try:
-            if self.repository.update_employee(employee_id, new_name):
-                return 'Departamento atualizado com sucesso', True
+            if new_name and self.repository.exists_employee_with_different_id(new_name, employee_id):
+                return None, 'Nome de colaborador já existe'
+
+            if self.repository.update_employee(employee_id, new_name, new_department_id, new_dependents):
+                return 'Colaborador atualizado com sucesso', True
             else:
-                return 'Erro ao atualizar departamento ou departamento não encontrado', False
+                return 'Erro ao atualizar colaborador ou colaborador não encontrado', False
         except Exception as e:
-            logging.error(f"Erro ao editar departamento: {e}")
+            logging.error(f"Erro ao atualizar colaborador: {e}")
             return None
 
     def delete_employee(self, employee_id: int):

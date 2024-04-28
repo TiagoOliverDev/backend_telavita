@@ -52,6 +52,38 @@ class EmployeeRepository():
         """Verifica se um colaborador com o dado nome já existe no banco de dados."""
         return Employee.query.filter_by(name=name).first() is not None
         
+    def update_employee(self, employee_id: int, new_name: str = None, new_department_id: int = None, new_dependents: list = None):
+        try:
+            employee = Employee.query.get(employee_id)
+            if not employee:
+                return False  
+
+            if new_name:
+                employee.name = new_name
+            
+            if new_department_id is not None:
+                employee.department_id = new_department_id
+
+            if new_dependents is not None:
+                # Remover dependentes atuais
+                Dependent.query.filter_by(employee_id=employee_id).delete()
+                # Adicionar novos dependentes
+                for dependent_name in new_dependents:
+                    new_dependent = Dependent(name=dependent_name, employee_id=employee_id)
+                    self.db.session.add(new_dependent)
+
+            self.db.session.commit()
+            return True
+        except Exception as e:
+            self.db.session.rollback()
+            logging.error(f"Erro ao atualizar dados do colaborador: {e}")
+            return False
+            
+    def exists_employee_with_different_id(self, name: str, employee_id: int):
+        """Verifica se existe um colaborador com o mesmo nome, mas com um ID diferente."""
+        employee = Employee.query.filter(Employee.name == name, Employee.id != employee_id).first()
+        return employee is not None
+
     def list_employees(self):
         try:
             employees = Employee.query.order_by(Employee.id).all()
@@ -59,19 +91,6 @@ class EmployeeRepository():
         except Exception as e:
             logging.error(f"Erro ao listar departamentos: {e}")
             return []
-        
-    def update_employee(self, employee_id: int, new_name: str):
-        try:
-            employee = Employee.query.get(employee_id)
-            if employee:
-                employee.name = new_name
-                self.db.session.commit()
-                return True
-            return False
-        except Exception as e:
-            self.db.session.rollback()
-            logging.error(f"Erro ao atualizar o departamento: {e}")
-            return False
         
     def delete_employee(self, employee_id: int):
         try:
