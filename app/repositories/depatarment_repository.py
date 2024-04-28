@@ -27,7 +27,7 @@ class DepartamentRepository():
         
     def list_departments(self):
         try:
-            departments = Department.query.all()
+            departments = Department.query.order_by(Department.id).all()
             return departments
         except Exception as e:
             logging.error(f"Erro ao listar departamentos: {e}")

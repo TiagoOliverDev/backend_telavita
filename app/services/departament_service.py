@@ -24,8 +24,12 @@ class DepartmentService:
             return None
         
     def get_all_departments(self):
-        return self.repository.list_departments()
-    
+        try:
+            departments = self.repository.list_departments()
+            return departments
+        except Exception as e:
+            logging.error(f"Erro ao listar departamentos: {e}")
+            return None
 
     def update_department(self, department_id: int, new_name: str):
         if self.repository.exists_department(new_name):

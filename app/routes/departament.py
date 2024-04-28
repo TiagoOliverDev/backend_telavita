@@ -37,10 +37,15 @@ def create_department():
     
 @departament_blueprint.route('/listar', methods=['GET'])
 def list_departments():
-    # repo = DepartmentRepository(db)
-    departments = departament_repository.list_departments()
-    departments_data = [{'id': d.id, 'name': d.name} for d in departments]
-    return jsonify(departments_data)
+    try:
+        departments = departament_service.get_all_departments()
+        if departments is None:
+            return jsonify({'error': 'Erro ao recuperar departamentos!'}), 500
+        
+        departments_data = [{'id': d.id, 'name': d.name} for d in departments]
+        return jsonify(departments_data), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 
 @departament_blueprint.route('/editar/<int:department_id>', methods=['PUT'])
