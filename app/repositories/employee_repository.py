@@ -2,6 +2,7 @@ from .db import Db
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy import func
 from ..models import Employee, Dependent
+from sqlalchemy.orm import joinedload
 import logging
 
 db = Db()
@@ -99,13 +100,23 @@ class EmployeeRepository():
         
     def get_employee_by_id(self, employee_id: int):
         try:
-            employee = Employee.query.get(employee_id)
-            if employee:
-                return employee
-            else:
+            employee = (Employee.query
+                        .options(joinedload(Employee.department), joinedload(Employee.dependents))
+                        .get(employee_id))
+            if not employee:
                 return None
+
+            return {
+                'id': employee.id,
+                'name': employee.name,
+                'department': {
+                    'id': employee.department.id,
+                    'name': employee.department.name
+                },
+                'dependents': [{'id': dependent.id, 'name': dependent.name} for dependent in employee.dependents]
+            }
         except Exception as e:
-            logging.error(f"Erro ao buscar o departamento: {e}")
+            logging.error(f"Erro ao buscar o colaborador: {e}")
             return None
-        
+            
 

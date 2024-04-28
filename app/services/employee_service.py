@@ -60,13 +60,13 @@ class EmployeeService:
            
     def get_employee_by_id(self, employee_id: int):
         try:
-            employee = self.repository.get_employee_by_id(employee_id)
-            if employee:
-                return {'id': employee.id, 'name': employee.name}, True
+            employee_data = self.repository.get_employee_by_id(employee_id)
+            if employee_data:
+                return employee_data, True
             else:
-                return 'Departamento não encontrado', False
+                return 'colaborador não encontrado', False
         except Exception as e:
-            logging.error(f"Erro ao buscar o departamento por ID: {e}")
-            return 'Erro interno ao buscar o departamento', False
+            logging.error(f"Erro ao buscar o colaborador por ID: {e}")
+            return 'Erro interno ao buscar o colaborador', False
         
 

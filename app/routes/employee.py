@@ -93,15 +93,15 @@ def delete_department(employee_id: int):
         logging.error(f"Erro inesperado ao excluir o colaborador: {e}")
         return jsonify({'error': 'Erro interno do servidor'}), 500
 
-@employee_blueprint.route('/busca_por_id/<int:department_id>', methods=['GET'])
-def get_department(department_id: int):
+@employee_blueprint.route('/busca_por_id/<int:employee_id>', methods=['GET'])
+def get_department(employee_id: int):
     try:
-        result, success = employee_service.get_department_by_id(department_id)
+        result, success = employee_service.get_employee_by_id(employee_id)
         
         if success:
             return jsonify(result), 200
         else:
-            if result == 'employeeo não encontrado':
+            if result == 'employee não encontrado':
                 return jsonify({'error': result}), 404
             else:
                 return jsonify({'error': result}), 500 
