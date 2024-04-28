@@ -32,3 +32,10 @@ class DepartmentService:
             return 'Departamento atualizado com sucesso', True
         else:
             return 'Erro ao atualizar departamento ou departamento não encontrado', False
+
+
+    def delete_department(self, department_id: int):
+        if self.repository.delete_department(department_id):
+            return 'Departamento excluído com sucesso', True
+        else:
+            return 'Erro ao excluir departamento ou departamento não encontrado', False
