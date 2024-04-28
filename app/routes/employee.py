@@ -5,6 +5,7 @@ from .resouces.validated_token import token_required
 from flask_cors import CORS, cross_origin
 from .resouces.cors_preflight_response import CorsOptions
 from ..models import db
+from ..swagger import EmployeeDocstrings
 import logging
 
 
@@ -110,5 +111,10 @@ def get_department(employee_id: int):
         return jsonify({'error': 'Erro interno do servidor'}), 500
 
 
-    
 
+############## Integração da docstring para documentar a API via SWAGGER ##############    
+create_employee.__doc__ = EmployeeDocstrings.create_employee
+get_employees_by_department.__doc__ = EmployeeDocstrings.get_employees_by_department
+update_employee.__doc__ = EmployeeDocstrings.update_employee
+delete_department.__doc__ = EmployeeDocstrings.delete_department
+get_department.__doc__ = EmployeeDocstrings.get_department
