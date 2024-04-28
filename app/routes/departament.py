@@ -1,112 +1,103 @@
 from flask import request, jsonify, Blueprint
 from ..repositories import DepartamentRepository
-# from ..services.departament_service import departamentService
+from ..services.departament_service import DepartmentService
 from .resouces.validated_token import token_required
 from flask_cors import CORS, cross_origin
 from .resouces.cors_preflight_response import CorsOptions
-import os
+from ..models import db
+import logging
 
 
-SECRET_KEY = os.environ.get('SECRET_KEY')
-# departament_service = departamentService(SECRET_KEY)
-
-departament_repository = DepartamentRepository()
+departament_repository = DepartamentRepository(db=db)
+departament_service = DepartmentService(departament_repository)
 
 departament_blueprint = Blueprint("departament", __name__, url_prefix="/departament")
 cors_options = CorsOptions()
 
 
+@departament_blueprint.route('/cadastrar', methods=['POST'])
+def create_department():
+    data = request.get_json()
+    department_name = data.get('name')
 
-@departament_blueprint.route('/teste', methods=['GET'])
-def list_all_departaments():
-    return jsonify('teste')
+    if not department_name:
+        return jsonify({'error': 'O nome do departamento é obrigatório'}), 400
 
-# @departament_blueprint.route('/register_departament', methods=['POST', 'OPTIONS'])
-# # @token_required
-# @cross_origin(origin='*', headers=['Content-Type', 'Authorization']) 
-# def register_departament():
+    try:
+        department_id, message = departament_service.create_department(department_name)
 
-#     if request.method == 'OPTIONS':
-#         return cors_options._build_cors_preflight_response()
+        if department_id:
+            return jsonify({'message': message, 'department_id': department_id}), 201
+        elif message == 'Departamento já existe':
+            return jsonify({'error': message}), 409
+        else:
+            return jsonify({'error': 'Erro ao tentar criar o departamento'}), 500
+    except Exception as e:
+        logging.error(f"Erro inesperado ao criar o departamento: {e}")
+        return jsonify({'error': 'Erro interno do servidor'}), 500
     
-#     if request.method == 'POST':
-#         data = request.get_json()
-#         name = data['nomeSetor']
+@departament_blueprint.route('/listar', methods=['GET'])
+def list_departments():
+    try:
+        departments = departament_service.get_all_departments()
+        if departments is None:
+            return jsonify({'error': 'Erro ao recuperar departamentos!'}), 500
+        
+        departments_data = [{'id': d.id, 'name': d.name} for d in departments]
+        return jsonify(departments_data), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
-#         if not all([name]):
-#             return jsonify({'message': 'Field is required'}), 400
+@departament_blueprint.route('/editar/<int:department_id>', methods=['PUT'])
+def update_department(department_id: int):
+    data = request.get_json()
+    new_name = data.get('name')
 
-#         departament, error = departament_service.register_departament(name=name)
-#         if error:
-#             return jsonify({'message': error}), 400
+    if not new_name:
+        return jsonify({'error': 'O novo nome do departamento é obrigatório'}), 400
 
-#         return jsonify({'departament': departament, 'message': 'departament created successfully'}), 201
+    try:
+        updated_department_id, message = departament_service.update_department(department_id, new_name)
 
-
-# @departament_blueprint.route('/list_all_departaments', methods=['GET'])
-# @token_required
-# def list_all_departaments(current_user):
-#     departaments = departament_service.list_all_departaments()
-#     if departaments is None:
-#         return jsonify({'message': 'Error fetching departaments'}), 500
+        if updated_department_id:
+            return jsonify({'message': message, 'department_id': updated_department_id}), 200  
+        elif message == 'Nome de departamento já existe':
+            return jsonify({'error': message}), 409
+        else:
+            return jsonify({'error': 'Erro ao tentar atualizar o departamento'}), 500
+    except Exception as e:
+        logging.error(f"Erro inesperado ao atualizar o departamento: {e}")
+        return jsonify({'error': 'Erro interno do servidor'}), 500
     
-#     return jsonify({'departaments': departaments}), 200
-
-
-# @departament_blueprint.route('/register_departament', methods=['POST', 'OPTIONS'])
-# # @token_required
-# @cross_origin(origin='*', headers=['Content-Type', 'Authorization']) 
-# def register_departament():
-
-#     if request.method == 'OPTIONS':
-#         return cors_options._build_cors_preflight_response()
-    
-#     if request.method == 'POST':
-#         data = request.get_json()
-#         name = data['nomeSetor']
-
-#         if not all([name]):
-#             return jsonify({'message': 'Field is required'}), 400
-
-#         departament, error = departament_service.register_departament(name=name)
-#         if error:
-#             return jsonify({'message': error}), 400
-
-#         return jsonify({'departament': departament, 'message': 'departament created successfully'}), 201
-
-
-# @departament_blueprint.route('/departament/<int:id>', methods=['GET', 'PUT', 'DELETE'])
-# @token_required
-# def departament(current_user, id):
-#     if request.method == 'GET':
-#         departament, error = departament_service.list_departament_by_id(id=id)
-#         if error:
-#             return jsonify({'message': error}), 500
-#         if not departament:
-#             return jsonify({'message': 'departament not found'}), 404
+@departament_blueprint.route('/excluir/<int:department_id>', methods=['DELETE'])
+def delete_department(department_id: int):
+    try:
+        message, success = departament_service.delete_department(department_id)
         
-#         return jsonify({'departament': [departament] if departament else [None]}), 200
+        if success:
+            return jsonify({'message': message}), 200
+        else:
+            if message == 'Departamento não encontrado':
+                return jsonify({'error': message}), 404  
+            else:
+                return jsonify({'error': message}), 500  
+    except Exception as e:
+        logging.error(f"Erro inesperado ao excluir o departamento: {e}")
+        return jsonify({'error': 'Erro interno do servidor'}), 500
 
-#     elif request.method == 'PUT':
-#         data = request.get_json()
-#         if 'nomeSetor' not in data:
-#             return jsonify({'message': 'nomeSetor is required'}), 400
-
-#         name = data['nomeSetor']
-
-#         updated_departament, error = departament_service.update_departament(id=id, name=name)
-#         if error:
-#             return jsonify({'message': error}), 500
-#         if not updated_departament:
-#             return jsonify({'message': 'departament not found'}), 404
+@departament_blueprint.route('/busca_por_id/<int:department_id>', methods=['GET'])
+def get_department(department_id: int):
+    try:
+        result, success = departament_service.get_department_by_id(department_id)
         
-#         return jsonify({'departament': updated_departament}), 200
+        if success:
+            return jsonify(result), 200
+        else:
+            if result == 'Departamento não encontrado':
+                return jsonify({'error': result}), 404
+            else:
+                return jsonify({'error': result}), 500 
+    except Exception as e:
+        logging.error(f"Erro inesperado ao buscar o departamento: {e}")
+        return jsonify({'error': 'Erro interno do servidor'}), 500
 
-#     elif request.method == 'DELETE':
-#         success, error = departament_service.departament_delete(id=id)
-#         if error:
-#             return jsonify({'message': error}), 500
-#         if not success:
-#             return jsonify({'message': 'departament not found'}), 404
-        
-#         return jsonify({'message': 'departament deleted successfully'}), 200
