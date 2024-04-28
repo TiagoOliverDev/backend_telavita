@@ -25,3 +25,10 @@ class DepartmentService:
         
     def get_all_departments(self):
         return self.repository.list_departments()
+    
+
+    def update_department(self, department_id: int, new_name: str):
+        if self.repository.update_department(department_id, new_name):
+            return 'Departamento atualizado com sucesso', True
+        else:
+            return 'Erro ao atualizar departamento ou departamento não encontrado', False

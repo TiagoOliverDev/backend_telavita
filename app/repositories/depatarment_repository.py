@@ -32,3 +32,16 @@ class DepartamentRepository():
         except Exception as e:
             logging.error(f"Erro ao listar departamentos: {e}")
             return []
+        
+    def update_department(self, department_id: int, new_name: str):
+        try:
+            department = Department.query.get(department_id)
+            if department:
+                department.name = new_name
+                self.db.session.commit()
+                return True
+            return False
+        except Exception as e:
+            self.db.session.rollback()
+            logging.error(f"Erro ao atualizar o departamento: {e}")
+            return False

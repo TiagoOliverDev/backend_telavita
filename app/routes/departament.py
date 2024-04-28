@@ -46,27 +46,57 @@ def list_departments():
     departments_data = [{'id': d.id, 'name': d.name} for d in departments]
     return jsonify(departments_data)
 
-# @departament_blueprint.route('/register_departament', methods=['POST', 'OPTIONS'])
-# # @token_required
-# @cross_origin(origin='*', headers=['Content-Type', 'Authorization']) 
-# def register_departament():
+@departament_blueprint.route('/departament/<int:id>', methods=['GET', 'PUT', 'DELETE'])
+# @token_required
+def sector(id):
+    if request.method == 'GET':
+        sector, error = departament_service.list_sector_by_id(id=id)
+        if error:
+            return jsonify({'message': error}), 500
+        if not sector:
+            return jsonify({'message': 'Sector not found'}), 404
+        
+        return jsonify({'sector': [sector] if sector else [None]}), 200
 
-#     if request.method == 'OPTIONS':
-#         return cors_options._build_cors_preflight_response()
+    elif request.method == 'PUT':
+        data = request.get_json()
+        if 'nomeSetor' not in data:
+            return jsonify({'message': 'nomeSetor is required'}), 400
+
+        name = data['nomeSetor']
+
+        updated_sector, error = departament_service.update_sector(id=id, name=name)
+        if error:
+            return jsonify({'message': error}), 500
+        if not updated_sector:
+            return jsonify({'message': 'Sector not found'}), 404
+        
+        return jsonify({'sector': updated_sector}), 200
+
+    elif request.method == 'DELETE':
+        success, error = departament_service.sector_delete(id=id)
+        if error:
+            return jsonify({'message': error}), 500
+        if not success:
+            return jsonify({'message': 'Sector not found'}), 404
+        
+        return jsonify({'message': 'Sector deleted successfully'}), 200
     
-#     if request.method == 'POST':
-#         data = request.get_json()
-#         name = data['nomeSetor']
 
-#         if not all([name]):
-#             return jsonify({'message': 'Field is required'}), 400
-
-#         departament, error = departament_service.register_departament(name=name)
-#         if error:
-#             return jsonify({'message': error}), 400
-
-#         return jsonify({'departament': departament, 'message': 'departament created successfully'}), 201
-
+@departament_blueprint.route('/editar/<int:department_id>', methods=['PUT'])
+def update_department(department_id: int):
+    data = request.get_json()
+    new_name = data.get('name')
+    
+    if not new_name:
+        return jsonify({'error': 'O novo nome do departamento é obrigatório'}), 400
+    
+    message, success = departament_service.update_department(department_id, new_name)
+    
+    if success:
+        return jsonify({'message': message}), 200
+    else:
+        return jsonify({'error': message}), 404  
 
 # @departament_blueprint.route('/list_all_departaments', methods=['GET'])
 # @token_required
