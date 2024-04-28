@@ -28,11 +28,17 @@ class DepartmentService:
     
 
     def update_department(self, department_id: int, new_name: str):
-        if self.repository.update_department(department_id, new_name):
-            return 'Departamento atualizado com sucesso', True
-        else:
-            return 'Erro ao atualizar departamento ou departamento não encontrado', False
-
+        if self.repository.exists_department(new_name):
+            return None, 'Nome de departamento já existe'
+        
+        try:
+            if self.repository.update_department(department_id, new_name):
+                return 'Departamento atualizado com sucesso', True
+            else:
+                return 'Erro ao atualizar departamento ou departamento não encontrado', False
+        except Exception as e:
+            logging.error(f"Erro ao editar departamento: {e}")
+            return None
 
     def delete_department(self, department_id: int):
         if self.repository.delete_department(department_id):

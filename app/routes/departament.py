@@ -18,7 +18,7 @@ departament_blueprint = Blueprint("departament", __name__, url_prefix="/departam
 cors_options = CorsOptions()
 
 
-@departament_blueprint.route('/criar', methods=['POST'])
+@departament_blueprint.route('/cadastrar', methods=['POST'])
 def create_department():
     data = request.get_json()
     department_name = data.get('name')
@@ -35,7 +35,7 @@ def create_department():
     else:
         return jsonify({'error': message}), 500
     
-@departament_blueprint.route('/list', methods=['GET'])
+@departament_blueprint.route('/listar', methods=['GET'])
 def list_departments():
     # repo = DepartmentRepository(db)
     departments = departament_repository.list_departments()
@@ -51,13 +51,16 @@ def update_department(department_id: int):
     if not new_name:
         return jsonify({'error': 'O novo nome do departamento é obrigatório'}), 400
     
-    message, success = departament_service.update_department(department_id, new_name)
+    department_id, message = departament_service.update_department(department_id, new_name)
     
-    if success:
-        return jsonify({'message': message}), 200
+    if department_id:
+        return jsonify({'message': message, 'department_id': department_id}), 201
+    elif message == 'Nome de departamento já existe':
+        return jsonify({'error': message}), 409  
     else:
-        return jsonify({'error': message}), 404  
+        return jsonify({'error': message}), 500
     
+
 
 @departament_blueprint.route('/excluir/<int:department_id>', methods=['DELETE'])
 def delete_department(department_id: int):
