@@ -1,11 +1,9 @@
-from .db import Db
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy import func
 from ..models import Employee, Dependent
 from sqlalchemy.orm import joinedload
 import logging
 
-db = Db()
 
 class EmployeeRepository():
     def __init__(self, db):

@@ -1,9 +1,7 @@
-from .db import Db
 from sqlalchemy.exc import SQLAlchemyError
 from ..models import Department
 import logging
 
-db = Db()
 
 class DepartamentRepository():
     def __init__(self, db):
