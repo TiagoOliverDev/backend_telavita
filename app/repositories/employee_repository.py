@@ -83,15 +83,7 @@ class EmployeeRepository():
         """Verifica se existe um colaborador com o mesmo nome, mas com um ID diferente."""
         employee = Employee.query.filter(Employee.name == name, Employee.id != employee_id).first()
         return employee is not None
-
-    def list_employees(self):
-        try:
-            employees = Employee.query.order_by(Employee.id).all()
-            return employees
-        except Exception as e:
-            logging.error(f"Erro ao listar departamentos: {e}")
-            return []
-        
+    
     def delete_employee(self, employee_id: int):
         try:
             employee = Employee.query.get(employee_id)

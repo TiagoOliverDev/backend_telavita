@@ -31,14 +31,6 @@ class EmployeeService:
             logging.error(f"Erro ao listar colaboradores: {e}")
             return None
         
-    def get_all_employees(self):
-        try:
-            employees = self.repository.list_employees()
-            return employees
-        except Exception as e:
-            logging.error(f"Erro ao listar departamentos: {e}")
-            return None
-
     def update_employee(self, employee_id: int, new_name: str = None, new_department_id: int = None, new_dependents: list = None):
         try:
             if new_name and self.repository.exists_employee_with_different_id(new_name, employee_id):
