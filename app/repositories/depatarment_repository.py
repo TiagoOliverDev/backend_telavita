@@ -58,3 +58,14 @@ class DepartamentRepository():
             self.db.session.rollback()
             logging.error(f"Erro ao excluir o departamento: {e}")
             return False
+        
+    def get_department_by_id(self, department_id: int):
+        try:
+            department = Department.query.get(department_id)
+            if department:
+                return department
+            else:
+                return None
+        except Exception as e:
+            logging.error(f"Erro ao buscar o departamento: {e}")
+            return None

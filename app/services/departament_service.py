@@ -39,3 +39,10 @@ class DepartmentService:
             return 'Departamento excluído com sucesso', True
         else:
             return 'Erro ao excluir departamento ou departamento não encontrado', False
+        
+    def get_department_by_id(self, department_id: int):
+        department = self.repository.get_department_by_id(department_id)
+        if department:
+            return {'id': department.id, 'name': department.name}, True
+        else:
+            return 'Departamento não encontrado', False

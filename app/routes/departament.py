@@ -60,13 +60,23 @@ def update_department(department_id: int):
     
 
 @departament_blueprint.route('/excluir/<int:department_id>', methods=['DELETE'])
-def delete_department(department_id):
+def delete_department(department_id: int):
     message, success = departament_service.delete_department(department_id)
     
     if success:
         return jsonify({'message': message}), 200
     else:
         return jsonify({'error': message}), 404  # ou 500, dependendo da lógica específica
+    
+
+@departament_blueprint.route('/buscar/<int:department_id>', methods=['GET'])
+def get_department(department_id: int):
+    result, success = departament_service.get_department_by_id(department_id)
+    
+    if success:
+        return jsonify(result), 200
+    else:
+        return jsonify({'error': result}), 404
 
 # @departament_blueprint.route('/list_all_departaments', methods=['GET'])
 # @token_required
