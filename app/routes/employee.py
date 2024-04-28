@@ -77,20 +77,20 @@ def update_employee(employee_id: int):
         logging.error(f"Erro interno no servidor ao tentar atualizar colaborador: {str(e)}")
         return jsonify({'error': 'Erro interno no servidor'}), 500
     
-@employee_blueprint.route('/excluir/<int:department_id>', methods=['DELETE'])
-def delete_department(department_id: int):
+@employee_blueprint.route('/excluir/<int:employee_id>', methods=['DELETE'])
+def delete_department(employee_id: int):
     try:
-        message, success = employee_service.delete_department(department_id)
+        message, success = employee_service.delete_employee(employee_id)
         
         if success:
             return jsonify({'message': message}), 200
         else:
-            if message == 'employeeo não encontrado':
+            if message == 'Colaborador não encontrado':
                 return jsonify({'error': message}), 404  
             else:
                 return jsonify({'error': message}), 500  
     except Exception as e:
-        logging.error(f"Erro inesperado ao excluir o employeeo: {e}")
+        logging.error(f"Erro inesperado ao excluir o colaborador: {e}")
         return jsonify({'error': 'Erro interno do servidor'}), 500
 
 @employee_blueprint.route('/busca_por_id/<int:department_id>', methods=['GET'])

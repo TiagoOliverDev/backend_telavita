@@ -94,7 +94,7 @@ class EmployeeRepository():
             return False
         except Exception as e:
             self.db.session.rollback()
-            logging.error(f"Erro ao excluir o departamento: {e}")
+            logging.error(f"Erro ao excluir o colaborador: {e}")
             return False
         
     def get_employee_by_id(self, employee_id: int):

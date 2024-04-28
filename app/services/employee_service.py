@@ -48,15 +48,15 @@ class EmployeeService:
         try:
             employee = self.repository.get_employee_by_id(employee_id)
             if not employee:
-                return 'Departamento não encontrado', False
+                return 'Colaborador não encontrado', False
 
             if self.repository.delete_employee(employee_id):
-                return 'Departamento excluído com sucesso', True
+                return 'Colaborador excluído com sucesso', True
             else:
-                return 'Erro ao excluir o departamento', False
+                return 'Erro ao excluir o colaborador', False
         except Exception as e:
-            logging.error(f"Erro ao tentar excluir o departamento: {e}")
-            return 'Erro interno ao tentar excluir o departamento', False
+            logging.error(f"Erro ao tentar excluir o colaborador: {e}")
+            return 'Erro interno ao tentar excluir o colaborador', False
            
     def get_employee_by_id(self, employee_id: int):
         try:
