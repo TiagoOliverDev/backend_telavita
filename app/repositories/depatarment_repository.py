@@ -2,7 +2,6 @@ from .db import Db
 from sqlalchemy.exc import SQLAlchemyError
 from ..models import Department
 import logging
-import psycopg2
 
 db = Db()
 

@@ -1,9 +1,4 @@
-# service.py
-from ..repositories import DepartamentRepository
-import jwt
 import logging
-
-# departament_repository = DepartamentRepository()
 
 class DepartmentService:
     def __init__(self, repository):
@@ -57,8 +52,7 @@ class DepartmentService:
         except Exception as e:
             logging.error(f"Erro ao tentar excluir o departamento: {e}")
             return 'Erro interno ao tentar excluir o departamento', False
-        
-        
+           
     def get_department_by_id(self, department_id: int):
         try:
             department = self.repository.get_department_by_id(department_id)

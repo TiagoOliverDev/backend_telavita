@@ -19,18 +19,22 @@ cors_options = CorsOptions()
 def create_department():
     data = request.get_json()
     department_name = data.get('name')
-    
+
     if not department_name:
         return jsonify({'error': 'O nome do departamento é obrigatório'}), 400
-    
-    department_id, message = departament_service.create_department(department_name)
-    
-    if department_id:
-        return jsonify({'message': message, 'department_id': department_id}), 201
-    elif message == 'Departamento já existe':
-        return jsonify({'error': message}), 409  
-    else:
-        return jsonify({'error': message}), 500
+
+    try:
+        department_id, message = departament_service.create_department(department_name)
+
+        if department_id:
+            return jsonify({'message': message, 'department_id': department_id}), 201
+        elif message == 'Departamento já existe':
+            return jsonify({'error': message}), 409
+        else:
+            return jsonify({'error': 'Erro ao tentar criar o departamento'}), 500
+    except Exception as e:
+        logging.error(f"Erro inesperado ao criar o departamento: {e}")
+        return jsonify({'error': 'Erro interno do servidor'}), 500
     
 @departament_blueprint.route('/listar', methods=['GET'])
 def list_departments():
@@ -48,18 +52,22 @@ def list_departments():
 def update_department(department_id: int):
     data = request.get_json()
     new_name = data.get('name')
-    
+
     if not new_name:
         return jsonify({'error': 'O novo nome do departamento é obrigatório'}), 400
-    
-    department_id, message = departament_service.update_department(department_id, new_name)
-    
-    if department_id:
-        return jsonify({'message': message, 'department_id': department_id}), 201
-    elif message == 'Nome de departamento já existe':
-        return jsonify({'error': message}), 409  
-    else:
-        return jsonify({'error': message}), 500
+
+    try:
+        updated_department_id, message = departament_service.update_department(department_id, new_name)
+
+        if updated_department_id:
+            return jsonify({'message': message, 'department_id': updated_department_id}), 200  
+        elif message == 'Nome de departamento já existe':
+            return jsonify({'error': message}), 409
+        else:
+            return jsonify({'error': 'Erro ao tentar atualizar o departamento'}), 500
+    except Exception as e:
+        logging.error(f"Erro inesperado ao atualizar o departamento: {e}")
+        return jsonify({'error': 'Erro interno do servidor'}), 500
     
 @departament_blueprint.route('/excluir/<int:department_id>', methods=['DELETE'])
 def delete_department(department_id: int):
