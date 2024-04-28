@@ -39,14 +39,19 @@ def create_employee():
     
 @employee_blueprint.route('/departamento/<int:department_id>/colaboradores', methods=['GET'])
 def get_employees_by_department(department_id: int):
-    employees = employee_service.get_employees_by_department(department_id)
-    if employees is not None:
-        if employees:  
-            return jsonify(employees), 200
+    try:
+        employees = employee_service.get_employees_by_department(department_id)
+        if employees is not None:
+            if employees:  
+                return jsonify(employees), 200
+            else:
+                return jsonify({'error': 'Nenhum colaborador encontrado'}), 404
         else:
-            return jsonify({'error': 'Nenhum colaborador encontrado'}), 404
-    else:
-        return jsonify({'error': 'Erro ao acessar o banco de dados'}), 500
+            return jsonify({'error': 'Erro ao acessar o banco de dados'}), 500
+            
+    except Exception as e:
+        logging.error(f"Erro interno no servidor ao tentar listar colaboradores: {str(e)}")
+        return jsonify({'error': 'Erro interno no servidor'}), 500
 
 @employee_blueprint.route('/editar/<int:department_id>', methods=['PUT'])
 def update_department(department_id: int):

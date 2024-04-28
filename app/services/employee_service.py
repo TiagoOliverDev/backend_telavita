@@ -19,6 +19,17 @@ class EmployeeService:
             logging.error(f"Erro ao cadastrar colaborador: {e}")
             return None
 
+    def get_employees_by_department(self, department_id: int):
+        """Busca todos os colaboradores de um departamento com detalhes sobre dependentes."""
+        try:
+            employees = self.repository.get_employees_by_department(department_id)
+            if employees is not None:  
+                return employees
+            else:
+                return None  
+        except Exception as e:
+            logging.error(f"Erro ao listar colaboradores: {e}")
+            return None
         
     def get_all_employees(self):
         try:
@@ -66,10 +77,4 @@ class EmployeeService:
             logging.error(f"Erro ao buscar o departamento por ID: {e}")
             return 'Erro interno ao buscar o departamento', False
         
-    def get_employees_by_department(self, department_id: int):
-        """Busca todos os colaboradores de um departamento com detalhes sobre dependentes."""
-        employees = self.repository.get_employees_by_department(department_id)
-        if employees is not None:  # Verifica se o retorno não é None
-            return employees
-        else:
-            return None  # None agora claramente indica um erro
+

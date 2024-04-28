@@ -29,7 +29,25 @@ class EmployeeRepository():
             logging.error(f"Erro ao adicionar o colaborador: {e}")
             return None  
 
-  
+    def get_employees_by_department(self, department_id: int):
+        """Retorna todos os colaboradores de um departamento específico, com a flag indicando se possuem dependentes."""
+        try:
+            employees = (self.db.session.query(Employee, func.count(Dependent.id).label('dependents_count'))
+                        .outerjoin(Dependent, Employee.id == Dependent.employee_id)
+                        .filter(Employee.department_id == department_id)
+                        .group_by(Employee.id)
+                        .all())
+            if not employees: 
+                return []  
+            return [{
+                'id': emp.Employee.id,
+                'name': emp.Employee.name,
+                'have_dependents': emp.dependents_count > 0
+            } for emp in employees]
+        except Exception as e:
+            logging.error(f"Erro ao buscar colaboradores do departamento {department_id}: {e}")
+            return None  
+
     def exists_employee(self, name: str):
         """Verifica se um colaborador com o dado nome já existe no banco de dados."""
         return Employee.query.filter_by(name=name).first() is not None
@@ -79,21 +97,4 @@ class EmployeeRepository():
             logging.error(f"Erro ao buscar o departamento: {e}")
             return None
         
-    def get_employees_by_department(self, department_id: int):
-        """Retorna todos os colaboradores de um departamento específico, com a flag indicando se possuem dependentes."""
-        try:
-            employees = (self.db.session.query(Employee, func.count(Dependent.id).label('dependents_count'))
-                        .outerjoin(Dependent, Employee.id == Dependent.employee_id)
-                        .filter(Employee.department_id == department_id)
-                        .group_by(Employee.id)
-                        .all())
-            if not employees: 
-                return []  # Retornar lista vazia se não houver colaboradores
-            return [{
-                'id': emp.Employee.id,
-                'name': emp.Employee.name,
-                'have_dependents': emp.dependents_count > 0
-            } for emp in employees]
-        except Exception as e:
-            logging.error(f"Erro ao buscar colaboradores do departamento {department_id}: {e}")
-            return None  
+
