@@ -6,6 +6,7 @@ from flask_cors import CORS, cross_origin
 from .resouces.cors_preflight_response import CorsOptions
 from ..models import db
 import os
+import logging
 
 
 SECRET_KEY = os.environ.get('SECRET_KEY')
@@ -47,7 +48,6 @@ def list_departments():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
-
 @departament_blueprint.route('/editar/<int:department_id>', methods=['PUT'])
 def update_department(department_id: int):
     data = request.get_json()
@@ -65,17 +65,23 @@ def update_department(department_id: int):
     else:
         return jsonify({'error': message}), 500
     
-
-
 @departament_blueprint.route('/excluir/<int:department_id>', methods=['DELETE'])
 def delete_department(department_id: int):
-    message, success = departament_service.delete_department(department_id)
-    
-    if success:
-        return jsonify({'message': message}), 200
-    else:
-        return jsonify({'error': message}), 404  # ou 500, dependendo da lógica específica
-    
+    try:
+        message, success = departament_service.delete_department(department_id)
+        
+        if success:
+            return jsonify({'message': message}), 200
+        else:
+            if message == 'Departamento não encontrado':
+                return jsonify({'error': message}), 404  
+            else:
+                return jsonify({'error': message}), 500  
+    except Exception as e:
+        logging.error(f"Erro inesperado ao excluir o departamento: {e}")
+        return jsonify({'error': 'Erro interno do servidor'}), 500
+
+
 
 @departament_blueprint.route('/buscar/<int:department_id>', methods=['GET'])
 def get_department(department_id: int):

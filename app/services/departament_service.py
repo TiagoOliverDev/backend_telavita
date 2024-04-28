@@ -45,10 +45,19 @@ class DepartmentService:
             return None
 
     def delete_department(self, department_id: int):
-        if self.repository.delete_department(department_id):
-            return 'Departamento excluído com sucesso', True
-        else:
-            return 'Erro ao excluir departamento ou departamento não encontrado', False
+        try:
+            department = self.repository.get_department_by_id(department_id)
+            if not department:
+                return 'Departamento não encontrado', False
+            
+            if self.repository.delete_department(department_id):
+                return 'Departamento excluído com sucesso', True
+            else:
+                return 'Erro ao excluir o departamento', False
+        except Exception as e:
+            logging.error(f"Erro ao tentar excluir o departamento: {e}")
+            return 'Erro interno ao tentar excluir o departamento', False
+        
         
     def get_department_by_id(self, department_id: int):
         department = self.repository.get_department_by_id(department_id)
