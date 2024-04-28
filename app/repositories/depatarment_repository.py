@@ -21,6 +21,10 @@ class DepartamentRepository():
             logging.error(f"Erro ao cadastrar o departamento: {e}")
             return None
         
+    def exists_department(self, name: str):
+        """Verifica se um departamento com o dado nome já existe no banco de dados."""
+        return Department.query.filter_by(name=name).first() is not None
+        
     def list_departments(self):
         try:
             departments = Department.query.all()

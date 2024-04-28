@@ -3,7 +3,6 @@ from ..repositories import DepartamentRepository
 import jwt
 import logging
 
-
 # departament_repository = DepartamentRepository()
 
 class DepartmentService:
@@ -11,7 +10,18 @@ class DepartmentService:
         self.repository = repository
 
     def create_department(self, name: str):
-        return self.repository.create_department(name)
-
+        if self.repository.exists_department(name):
+            return None, 'Departamento já existe'
+        
+        try:
+            department_id = self.repository.create_department(name)
+            if department_id:
+                return department_id, 'Departamento criado com sucesso'
+            else:
+                return None, 'Falha ao criar departamento. O departamento já existe!'
+        except Exception as e:
+            logging.error(f"Erro ao cadastrar departamento: {e}")
+            return None
+        
     def get_all_departments(self):
         return self.repository.list_departments()

@@ -18,7 +18,6 @@ departament_blueprint = Blueprint("departament", __name__, url_prefix="/departam
 cors_options = CorsOptions()
 
 
-
 @departament_blueprint.route('/teste', methods=['GET'])
 def list_all_departaments():
     return jsonify('teste')
@@ -31,14 +30,14 @@ def create_department():
     if not department_name:
         return jsonify({'error': 'O nome do departamento é obrigatório'}), 400
     
-    # repo = DepartamentRepository(db)
-    # department_id = departament_repository.create_department(department_name)
-    department_id = departament_service.create_department(department_name)
+    department_id, message = departament_service.create_department(department_name)
     
     if department_id:
-        return jsonify({'message': 'Departamento criado com sucesso', 'department_id': department_id}), 201
+        return jsonify({'message': message, 'department_id': department_id}), 201
+    elif message == 'Departamento já existe':
+        return jsonify({'error': message}), 409  
     else:
-        return jsonify({'error': 'Falha ao criar departamento'}), 500
+        return jsonify({'error': message}), 500
     
 @departament_blueprint.route('/list', methods=['GET'])
 def list_departments():
