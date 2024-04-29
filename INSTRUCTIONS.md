@@ -40,40 +40,41 @@ Basicamente foi usado um tipo de MVC.
 
 # Padrão de pastas
 
-backend_telavita/
-│
-├── app/
-│   ├── __init__.py
-│   ├── models/
-│   └── ...
-│   ├── repositories/
-│   └── ...
-│   ├── routes/
-│   └── ...
-│   ├── services/
-│   └── ...
-│   └── swagger/
-│   └── ...
-│
-├── config/
-│   └── ...
-├── venv/
-│   └── ...
-├── images/
-│   └── ...
-├── migrations/
-│   └── ...
-├── tests/
-│   └── ...
-│
-├── .env
-├── .gitignore
-├── docker-compose.yml
-├── Dockerfile
-└── README.md
-├── requirements.txt
-├── server.py
-
+```
+    backend_telavita/
+    │
+    ├── app/
+    │   ├── __init__.py
+    │   ├── models/
+    │   └── ...
+    │   ├── repositories/
+    │   └── ...
+    │   ├── routes/
+    │   └── ...
+    │   ├── services/
+    │   └── ...
+    │   └── swagger/
+    │   └── ...
+    │
+    ├── config/
+    │   └── ...
+    ├── venv/
+    │   └── ...
+    ├── images/
+    │   └── ...
+    ├── migrations/
+    │   └── ...
+    ├── tests/
+    │   └── ...
+    │
+    ├── .env
+    ├── .gitignore
+    ├── docker-compose.yml
+    ├── Dockerfile
+    └── README.md
+    ├── requirements.txt
+    ├── server.py
+ ```
 
 # Features 
 
