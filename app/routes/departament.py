@@ -18,6 +18,16 @@ cors_options = CorsOptions()
 
 @departament_blueprint.route('/cadastrar', methods=['POST'])
 def create_department():
+    """
+    Cadastra um novo departamento.
+    
+    Recebe o nome do departamento via JSON e tenta criá-lo. Retorna uma mensagem de sucesso com o ID
+    do departamento criado, uma mensagem de erro se o departamento já existir, ou um erro genérico se
+    ocorrer outra falha.
+    
+    Returns:
+        JSON response with status code.
+    """
     data = request.get_json()
     department_name = data.get('name')
 
@@ -39,6 +49,15 @@ def create_department():
     
 @departament_blueprint.route('/listar', methods=['GET'])
 def list_departments():
+    """
+    Lista todos os departamentos cadastrados.
+    
+    Tenta recuperar todos os departamentos e devolve uma lista contendo seus dados. Se houver uma falha,
+    retorna um erro genérico.
+    
+    Returns:
+        JSON response with status code.
+    """
     try:
         departments = departament_service.get_all_departments()
         if departments is None:
@@ -51,6 +70,19 @@ def list_departments():
 
 @departament_blueprint.route('/editar/<int:department_id>', methods=['PUT'])
 def update_department(department_id: int):
+    """
+    Atualiza o nome de um departamento existente.
+    
+    Recebe um novo nome para o departamento via JSON. Se o novo nome não for fornecido, retorna um erro.
+    Se a atualização for bem-sucedida, retorna sucesso; se o nome já existir, retorna um erro específico;
+    caso contrário, retorna um erro genérico.
+    
+    Args:
+        department_id (int): ID do departamento a ser atualizado.
+
+    Returns:
+        JSON response with status code.
+    """
     data = request.get_json()
     new_name = data.get('name')
 
@@ -72,6 +104,19 @@ def update_department(department_id: int):
     
 @departament_blueprint.route('/excluir/<int:department_id>', methods=['DELETE'])
 def delete_department(department_id: int):
+    """
+    Exclui um departamento existente.
+    
+    Tenta excluir um departamento com base no ID fornecido. Se o departamento for excluído com sucesso,
+    retorna uma mensagem de sucesso; se não for encontrado, retorna um erro específico; caso contrário, retorna
+    um erro genérico.
+    
+    Args:
+        department_id (int): ID do departamento a ser excluído.
+
+    Returns:
+        JSON response with status code.
+    """
     try:
         message, success = departament_service.delete_department(department_id)
         
@@ -88,6 +133,18 @@ def delete_department(department_id: int):
 
 @departament_blueprint.route('/busca_por_id/<int:department_id>', methods=['GET'])
 def get_department(department_id: int):
+    """
+    Busca um departamento por ID.
+    
+    Tenta encontrar um departamento pelo ID fornecido. Se encontrado, retorna os dados do departamento;
+    se não for encontrado, retorna um erro específico; em caso de outra falha, retorna um erro genérico.
+    
+    Args:
+        department_id (int): ID do departamento a ser buscado.
+
+    Returns:
+        JSON response with status code.
+    """
     try:
         result, success = departament_service.get_department_by_id(department_id)
         
