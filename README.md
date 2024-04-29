@@ -179,6 +179,8 @@ Usei as seguintes tecnologias:
 
 # Agora pode acessar os links abaixo e testar a API via interface Swagger
 
+  - Dica: começar a testar pelos endpoints de cadastro (department/cadastro e colaborador/cadastro)
+
   ```
   http://localhost/
   ```
