@@ -1,7 +1,0 @@
-rodar os seguintes comandos para a migrations do banco
-
-flask db init
-
-flask db migrate -m "msg migrations"
-
-flask db upgrade
