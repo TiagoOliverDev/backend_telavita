@@ -162,13 +162,15 @@ Usei as seguintes tecnologias:
 
 ## Step 5: Rodar API e ativar Swagger doc
 
-  Rode o comando para startar a API:
+  Abra dois terminals/CMD
+
+  Em um rode o comando para startar a API:
 
   ```
   python server.py
   ```
 
-  Rode o comando para ativar o docker da Swagger doc:
+  No outro rode o comando para ativar o docker da Swagger doc:
 
 
   ```
