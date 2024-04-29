@@ -102,12 +102,12 @@ def get_department(employee_id: int):
         if success:
             return jsonify(result), 200
         else:
-            if result == 'employee não encontrado':
+            if result == 'Colaborador não encontrado':
                 return jsonify({'error': result}), 404
             else:
                 return jsonify({'error': result}), 500 
     except Exception as e:
-        logging.error(f"Erro inesperado ao buscar o employeeo: {e}")
+        logging.error(f"Erro inesperado ao buscar o colaborador: {e}")
         return jsonify({'error': 'Erro interno do servidor'}), 500
 
 

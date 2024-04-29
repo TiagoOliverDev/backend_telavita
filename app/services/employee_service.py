@@ -37,7 +37,7 @@ class EmployeeService:
                 return None, 'Nome de colaborador já existe'
 
             if self.repository.update_employee(employee_id, new_name, new_department_id, new_dependents):
-                return 'Colaborador atualizado com sucesso', True
+                return employee_id, 'Colaborador atualizado com sucesso'
             else:
                 return 'Erro ao atualizar colaborador ou colaborador não encontrado', False
         except Exception as e:
@@ -64,7 +64,7 @@ class EmployeeService:
             if employee_data:
                 return employee_data, True
             else:
-                return 'colaborador não encontrado', False
+                return 'Colaborador não encontrado', False
         except Exception as e:
             logging.error(f"Erro ao buscar o colaborador por ID: {e}")
             return 'Erro interno ao buscar o colaborador', False
