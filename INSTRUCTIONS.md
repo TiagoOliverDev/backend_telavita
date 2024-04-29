@@ -6,24 +6,9 @@ Projeto de modelagem de dados e criação de uma API utilizando Python e qualque
 
 <hr/>
 
-Register
-![background](https://github.com/TiagoOliverDev/backend_pontos/blob/main/images/register.png)
+# Documentação SWAGGER integrada
 
-Login
-![background](https://github.com/TiagoOliverDev/backend_pontos/blob/main/images/login.png)
-
-Collaborated created
-![background](https://github.com/TiagoOliverDev/backend_pontos/blob/main/images/colaboradorCreated.png)
-
-List all Collaborators
-![background](https://github.com/TiagoOliverDev/backend_pontos/blob/main/images/list_all_colaborator.png)
-
-Type points
-![background](https://github.com/TiagoOliverDev/backend_pontos/blob/main/images/typesPontos.png)
-
-Register points
-![background](https://github.com/TiagoOliverDev/backend_pontos/blob/main/images/registerPoint.png)
-
+![background](https://github.com/TiagoOliverDev/backend_telavita/blob/main/images/image.png)
 
 <hr/>
 
