@@ -15,5 +15,5 @@ class ProductionConfig(Config):
 
 class TestingConfig(Config):
     TESTING = True
-    SQLALCHEMY_DATABASE_URI = 'postgresql://postgres:root@localhost/development_db'
+    SQLALCHEMY_DATABASE_URI = 'postgresql://postgres:root@localhost/testing_db'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
