@@ -146,7 +146,7 @@ Usei as seguintes tecnologias:
 
 ## Step 4: Criar migrations 
 
-  Rode o migrate.py para realizar as migrations
+  Rode o migrate.py para realizar as migrations (certifique-se de não ter nenhuma pasta /migrations na raiz do projeto)
 
   ```
   python migrate.py
