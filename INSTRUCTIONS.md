@@ -57,6 +57,7 @@ Basicamente foi usado um tipo de MVC.
     ├── docker-compose.yml
     ├── Dockerfile
     └── README.md
+    ├── migrate.py
     ├── requirements.txt
     ├── server.py
  ```
