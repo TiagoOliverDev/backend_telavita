@@ -13,7 +13,7 @@ def create_app():
 
     if os.environ.get('FLASK_ENV') == 'production':
         env_config = ProductionConfig
-    elif os.environ.get('FLASK_ENV') == 'test':
+    elif os.environ.get('FLASK_ENV') == 'testing':
         env_config = TestingConfig
     else:
         env_config = DevelopmentConfig
@@ -33,5 +33,7 @@ def create_app():
         swag['info']['version'] = "1.0"
         swag['info']['title'] = "ACME API"
         return jsonify(swag)
+    
+    CORS(app, resources={r"/swagger*": {"origins": "*", "methods": ["GET"], "allow_headers": "*"}})
 
     return app
