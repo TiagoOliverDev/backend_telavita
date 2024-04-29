@@ -32,7 +32,7 @@ class DepartmentService:
         
         try:
             if self.repository.update_department(department_id, new_name):
-                return 'Departamento atualizado com sucesso', True
+                return department_id, 'Departamento atualizado com sucesso'
             else:
                 return 'Erro ao atualizar departamento ou departamento não encontrado', False
         except Exception as e:
