@@ -1,0 +1,2 @@
+from .docstrings_departament import DepartmentDocstrings
+from .docstrings_employee import EmployeeDocstrings

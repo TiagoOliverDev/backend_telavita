@@ -5,6 +5,7 @@ from .resouces.validated_token import token_required
 from flask_cors import CORS, cross_origin
 from .resouces.cors_preflight_response import CorsOptions
 from ..models import db
+from ..swagger import DepartmentDocstrings
 import logging
 
 
@@ -100,4 +101,13 @@ def get_department(department_id: int):
     except Exception as e:
         logging.error(f"Erro inesperado ao buscar o departamento: {e}")
         return jsonify({'error': 'Erro interno do servidor'}), 500
+
+
+
+############## Integração da docstring para documentar a API via SWAGGER ##############
+create_department.__doc__ = DepartmentDocstrings.create_department
+list_departments.__doc__ = DepartmentDocstrings.list_departments
+update_department.__doc__ = DepartmentDocstrings.update_departments
+delete_department.__doc__ = DepartmentDocstrings.delete_department
+get_department.__doc__ = DepartmentDocstrings.get_department_by_id
 

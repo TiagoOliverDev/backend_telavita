@@ -11,7 +11,7 @@ class Employee(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
     department_id = db.Column(db.Integer, db.ForeignKey('department.id'), nullable=False)
-    dependents = db.relationship('Dependent', backref='employee', lazy=True)
+    dependents = db.relationship('Dependent', backref='employee', lazy=True, cascade="all, delete-orphan")
 
 class Dependent(db.Model):
     __tablename__ = "dependent"
