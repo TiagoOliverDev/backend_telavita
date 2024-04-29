@@ -11,7 +11,7 @@ from app import create_app, db
 class DepartmentTestCase(unittest.TestCase):
     def setUp(self):
         logging.basicConfig(level=logging.DEBUG)
-        logging.debug("Setup de testes")
+        logging.debug("Setup de testes para departamentos")
         self.app = create_app()
         self.client = self.app.test_client()
         self.app_context = self.app.app_context()
@@ -228,9 +228,6 @@ class DepartmentTestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 404)
         data = json.loads(response.data)
         self.assertEqual(data['error'], 'Departamento não encontrado')
-
-
-
 
 
 
