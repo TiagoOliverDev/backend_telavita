@@ -168,14 +168,14 @@ Usei as seguintes tecnologias:
   python server.py
   ```
 
-  Rode o comando para ativar Swagger doc:
+  Rode o comando para ativar o docker da Swagger doc:
 
 
   ```
   docker run -p 80:8080 -e URL=http://localhost:1010/swagger swaggerapi/swagger-ui
   ```
 
-# Agora pode acessar os links abaixo e testar a API
+# Agora pode acessar os links abaixo e testar a API via interface Swagger
 
   ```
   http://localhost/
@@ -204,6 +204,10 @@ Usei as seguintes tecnologias:
   ```
 
 ## Autor
+
+## OBS:
+
+   - Crie o projeto todo adaptado para rodar com "docker-compose up" startando as imagens docker (API e Swagger) e roda normalmente mas infelizmente dá alguns conflito com o PostgreSql que mesmo permitindo conexões remota ele não conecta por conta do uso do SqlAlchemy dai acaba que não fica sendo possível testar a Api swagger dessa forma pelo docker-compose, por isso deixei mais manual a forma de rodar o projeto acima, aonde starto apenas o docker do Swagger e rodo a API manualmente, com isso fica mais fácil de testar.
 
 :man: **Tiago Oliveira**
 
