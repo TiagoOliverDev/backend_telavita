@@ -5,7 +5,8 @@ class Config:
 
 class DevelopmentConfig(Config):
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = 'postgresql://postgres:root@localhost/development_db'
+    SQLALCHEMY_DATABASE_URI = 'postgresql://postgres:root@localhost/teste10'
+    # SQLALCHEMY_DATABASE_URI = 'postgresql://postgres:root@localhost/developer_telavita'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 class ProductionConfig(Config):

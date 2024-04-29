@@ -27,13 +27,10 @@ def create_app():
 
     # Configuração do Swagger
     @app.route('/swagger')
-    @cross_origin()
     def swagger_api():
         swag = swagger(app)
         swag['info']['version'] = "1.0"
         swag['info']['title'] = "ACME API"
         return jsonify(swag)
-    
-    CORS(app, resources={r"/swagger*": {"origins": "*", "methods": ["GET"], "allow_headers": "*"}})
 
     return app

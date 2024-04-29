@@ -137,9 +137,15 @@ Usei as seguintes tecnologias:
  pip install -r requirements.txt
 
 
-## Step 3: Criar o banco local no Postgresql (PgAdmin 4, Dbeaver, etc..)
+## Step 3: Criar dois bancos (teste, desenvolvimento) local no Postgresql (PgAdmin 4, Dbeaver, etc..)
 
-  Esse banco deve se chamar:
+  O de teste deve se chamar:
+
+  ```
+  testing_db
+  ```
+
+  O de desenvolvimento deve se chamar:
 
   ```
   teste10
@@ -174,13 +180,28 @@ Usei as seguintes tecnologias:
   ```
   http://localhost/
   ```
-  
+
   ```
   http://localhost:1010/swagger
   ```
 
 <hr/>
 
+## AINDA NÃO ACABOU! Tem os testes unitários básicos!
+
+  - Vá até .env e comente a variavel FLASK_ENV=development e descomente a FLASK_ENV=testing Com isso o ambiente será totalmente de testes!
+  - Agora é só rodar os testes, que no total são 22 testes básicos de endpoints
+  - Fiz entre dois a três testes por endpoint usando Unitest
+
+  Rode com:
+
+  ```
+  python .\tests\test_department_routes.py
+  ```
+
+  ```
+  python .\tests\test_employee_routes.py
+  ```
 
 ## Autor
 
