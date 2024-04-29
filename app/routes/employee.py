@@ -18,6 +18,16 @@ cors_options = CorsOptions()
 
 @employee_blueprint.route('/cadastrar', methods=['POST'])
 def create_employee():
+    """
+    Cadastra um novo colaborador no sistema.
+
+    Recebe os dados do colaborador via JSON, incluindo nome, departamento e dependentes (opcional). 
+    Valida a obrigatoriedade do nome e do departamento. Retorna uma mensagem de sucesso com o ID do 
+    colaborador criado, um erro se o colaborador já existir, ou um erro genérico se ocorrer outra falha.
+
+    Returns:
+        JSON response with status code.
+    """
     try:
         data = request.get_json()
         name = data.get('name')
@@ -40,6 +50,19 @@ def create_employee():
     
 @employee_blueprint.route('/departamento/<int:department_id>/colaboradores', methods=['GET'])
 def get_employees_by_department(department_id: int):
+    """
+    Lista todos os colaboradores de um departamento específico.
+
+    Tenta recuperar todos os colaboradores de um departamento pelo ID fornecido. Se houver colaboradores, 
+    retorna seus dados; se não houver, retorna um erro indicando que nenhum foi encontrado. Retorna um erro
+    genérico em caso de falha de acesso ao banco de dados.
+
+    Args:
+        department_id (int): ID do departamento cujos colaboradores serão listados.
+
+    Returns:
+        JSON response with status code.
+    """
     try:
         employees = employee_service.get_employees_by_department(department_id)
         if employees is not None:
@@ -56,6 +79,19 @@ def get_employees_by_department(department_id: int):
 
 @employee_blueprint.route('/editar/<int:employee_id>', methods=['PUT'])
 def update_employee(employee_id: int):
+    """
+    Atualiza os dados de um colaborador existente.
+
+    Recebe via JSON as novas informações do colaborador, incluindo nome, departamento e dependentes.
+    Valida se pelo menos uma informação para atualização foi fornecida. Retorna uma mensagem de sucesso,
+    um erro se o nome do colaborador já existir, ou um erro genérico para outras falhas.
+
+    Args:
+        employee_id (int): ID do colaborador a ser atualizado.
+
+    Returns:
+        JSON response with status code.
+    """
     try:
         data = request.get_json()
         new_name = data.get('name')
@@ -80,6 +116,18 @@ def update_employee(employee_id: int):
     
 @employee_blueprint.route('/excluir/<int:employee_id>', methods=['DELETE'])
 def delete_department(employee_id: int):
+    """
+    Exclui um colaborador do sistema.
+
+    Tenta excluir um colaborador pelo ID fornecido. Retorna uma mensagem de sucesso se excluído,
+    um erro se o colaborador não for encontrado, ou um erro genérico em caso de outra falha.
+
+    Args:
+        employee_id (int): ID do colaborador a ser excluído.
+
+    Returns:
+        JSON response with status code.
+    """
     try:
         message, success = employee_service.delete_employee(employee_id)
         
@@ -96,6 +144,18 @@ def delete_department(employee_id: int):
 
 @employee_blueprint.route('/busca_por_id/<int:employee_id>', methods=['GET'])
 def get_department(employee_id: int):
+    """
+    Busca um colaborador pelo seu ID.
+
+    Tenta encontrar um colaborador pelo ID fornecido. Retorna os dados do colaborador se encontrado,
+    um erro específico se não for encontrado, ou um erro genérico em caso de outra falha.
+
+    Args:
+        employee_id (int): ID do colaborador a ser buscado.
+
+    Returns:
+        JSON response with status code.
+    """
     try:
         result, success = employee_service.get_employee_by_id(employee_id)
         
