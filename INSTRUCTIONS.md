@@ -89,6 +89,7 @@ Usei as seguintes tecnologias:
 
 - Python >= 3.10.11
 - Flask
+- PostgreSQL 
 - SQLAlchemy
 - Blueprint
 - Unittest
@@ -117,6 +118,8 @@ Usei as seguintes tecnologias:
 
 ## Step 2: Criar uma env
 
+# # windows
+
  python -m venv nome_da_env
 
  nome_da_env/Scripts/activate
@@ -124,7 +127,54 @@ Usei as seguintes tecnologias:
  pip install -r requirements.txt
 
 
+# # Linux
 
+ python3 -m venv meu_venv
+
+ source meu_venv/bin/activate
+
+ pip install -r requirements.txt
+
+
+## Step 3: Criar o banco local no Postgresql (PgAdmin 4, Dbeaver, etc..)
+
+  Esse banco deve se chamar:
+
+  ```
+  teste10
+  ```
+
+## Step 4: Criar migrations 
+
+  Rode o migrate.py para realizar as migrations
+
+  ```
+  python migrate.py
+  ```
+
+
+## Step 5: Rodar API e ativar Swagger doc
+
+  Rode o comando para startar a API:
+
+  ```
+  python server.py
+  ```
+
+  Rode o comando para ativar Swagger doc:
+
+
+  ```
+  docker run -p 80:8080 -e URL=http://localhost:1010/swagger swaggerapi/swagger-ui
+  ```
+
+# Agora pode acessar os links abaixo e testar a API
+
+  ```
+  http://localhost/
+
+  http://localhost:1010/swagger
+  ```
 
 <hr/>
 
