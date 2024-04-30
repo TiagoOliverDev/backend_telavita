@@ -209,7 +209,7 @@ Usei as seguintes tecnologias:
 
 ## OBS:
 
-   - Crie o projeto todo adaptado para rodar com "docker-compose up" startando as imagens docker (API e Swagger) e roda normalmente mas infelizmente dá alguns conflito com o PostgreSql que mesmo permitindo conexões remota ele não conecta por conta do uso do SqlAlchemy dai acaba que não fica sendo possível testar a Api swagger dessa forma pelo docker-compose, por isso deixei mais manual a forma de rodar o projeto acima, aonde starto apenas o docker do Swagger e rodo a API manualmente, com isso fica mais fácil de testar.
+   - Criei o projeto todo adaptado para rodar com "docker-compose up" startando as imagens docker (API e Swagger) e roda normalmente mas infelizmente dá alguns conflito com o PostgreSql que mesmo permitindo conexões remota ele não conecta por conta do uso do SqlAlchemy dai acaba que não fica sendo possível testar a Api swagger dessa forma pelo docker-compose, por isso deixei mais manual a forma de rodar o projeto acima, aonde starto apenas o docker do Swagger e rodo a API manualmente, com isso fica mais fácil de testar.
 
 ## Autor
 
