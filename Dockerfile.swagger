@@ -1,8 +1,5 @@
-# Dockerfile do swagger
 FROM swaggerapi/swagger-ui
 
-# Configura a URL da especificação Swagger para a URL onde sua aplicação Flask serve o swagger.json
 ENV SWAGGER_JSON http://localhost:1010/swagger
 
-# Expõe a porta 80
 EXPOSE 80
